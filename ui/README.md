@@ -1,3 +1,6 @@
+## Install packages and dependencies
+`npm ci`
+
 ## Available Scripts
 
 In the project directory, you can run:
