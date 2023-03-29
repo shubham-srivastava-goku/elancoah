@@ -33,7 +33,7 @@ function ResourceInfo(props: IApplicationInfo) {
     { field: 'ConsumedQuantity', headerName: 'Consumed Quantity', width: 150 },
     { field: 'Cost', headerName: 'Cost' },
     { field: 'Date', headerName: 'Date' },
-    { field: 'ServiceName', headerName: 'Service Name' },
+    { field: 'ResourceGroup', headerName: 'Resource Group', width: 200 },
     {
       field: 'Info', renderCell: (cellValues) => {
         return (
@@ -112,7 +112,7 @@ export function Resources(props: {
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
+        <ListSubheader component="div" id="nested-list-subheader" style={{ fontWeight: 900, fontSize: "1.5rem" }}>
           Resources
         </ListSubheader>
       }
