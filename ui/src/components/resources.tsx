@@ -22,8 +22,6 @@ function ResourceInfo(props: IApplicationInfo) {
         value.id = v4();
       });
 
-      console.log(response.data);
-
       setRows(response.data as IAPIRaw[]);
     })();
   }, [props.name]);

@@ -48,8 +48,6 @@ function App() {
   };
 
   const handleInfoClick = (event: React.MouseEvent, value: GridRenderCellParams<any, any, any, GridTreeNodeWithRender>) => {
-    console.log(value);
-
     setCurrentData(value.row as IAPIRaw);
     setOpenDialog(true);
   }

@@ -24,8 +24,6 @@ function ApplicationInfo(props: IApplicationInfo) {
         value.ConsumedQuantity = parseFloat(`${value.ConsumedQuantity}`);
       });
 
-      console.log(response.data);
-
       setRows(response.data as IAPIRaw[]);
     })();
   }, [props.name]);
@@ -91,7 +89,7 @@ export function Applications(props: {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get('https://engineering-task.elancoapps.com/api//applications');
+      const response = await axios.get('https://engineering-task.elancoapps.com/api/applications');
       response.data.forEach((value: string) => {
         createOpenCloseVar(value);
       });
