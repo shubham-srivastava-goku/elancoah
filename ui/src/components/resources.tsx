@@ -1,30 +1,19 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
-import { List, ListSubheader, Collapse, ListItemButton, ListItemText } from '@mui/material';
+import { List, ListSubheader, Collapse, ListItemButton, ListItemText, Button } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams, GridTreeNodeWithRender } from '@mui/x-data-grid';
+import { IAPIRaw } from '../App';
 
-
-interface IAPIRaw {
-  id: string,
-  ConsumedQuantity: string,
-  Cost: string,
-  Date: string,
-  InstanceId: string,
-  MeterCategory: string,
-  ResourceGroup: string,
-  ResourceLocation: string,
-  Tags: {
-    [key: string]: string,
-  },
-  UnitOfMeasure: string,
-  Location: string,
-  ServiceName: string,
+interface IApplicationInfo {
+  name: string,
+  handleInfoClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, cellValues: GridRenderCellParams<any, any, any, GridTreeNodeWithRender>): void,
 }
 
-function ResourceInfo(props: { name: string }) {
+function ResourceInfo(props: IApplicationInfo) {
+  const { handleInfoClick } = props;
   const [rows, setRows] = useState([] as IAPIRaw[]);
   useEffect(() => {
     (async () => {
@@ -41,11 +30,26 @@ function ResourceInfo(props: { name: string }) {
 
   const columns: GridColDef[] = [
     { field: 'InstanceId', headerName: 'Instance Id', width: 370 },
-    { field: 'ConsumedQuantity', headerName: 'Consumed Quantity', width: 150},
-    { field: 'Cost', headerName: 'Cost'},
-    { field: 'Date', headerName: 'Date'},
-    { field: 'ResourceLocation', headerName: 'Resource Location', width: 150},
-    { field: 'ServiceName', headerName: 'Service Name'},
+    { field: 'ConsumedQuantity', headerName: 'Consumed Quantity', width: 150 },
+    { field: 'Cost', headerName: 'Cost' },
+    { field: 'Date', headerName: 'Date' },
+    { field: 'ServiceName', headerName: 'Service Name' },
+    {
+      field: 'Info', renderCell: (cellValues) => {
+        return (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(event) => {
+              handleInfoClick(event, cellValues);
+            }}
+          >
+            View more
+          </Button>
+        )
+      },
+      width: 180,
+    }
   ];
 
   return (
@@ -59,10 +63,13 @@ function ResourceInfo(props: { name: string }) {
   )
 }
 
-export function Resources(props: {}) {
+export function Resources(props: {
+  handleInfoClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, cellValues: GridRenderCellParams<any, any, any, GridTreeNodeWithRender>): void,
+}) {
   const [appList, setAppList] = useState([]);
   const [open, setOpen] = useState({} as { [key: string]: boolean });
   const [current, setCurrent] = useState("");
+  const { handleInfoClick } = props;
 
   const handleClick = (value: string) => {
     if (value === current) {
@@ -121,7 +128,7 @@ export function Resources(props: {}) {
               <Collapse in={open[value]} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemText primary={<ResourceInfo name={value} />} />
+                    <ListItemText primary={<ResourceInfo handleInfoClick={handleInfoClick} name={value} />} />
                   </ListItemButton>
                 </List>
               </Collapse>
